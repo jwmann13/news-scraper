@@ -1,11 +1,18 @@
-const express = require("express")
+const express = require("express");
+const { Album, Review } = require("../models")
 
 module.exports = (() => {
     const reviews = express.Router();
 
     reviews.get("/", (req, res) => {
-        res.send("hello")
+        Review.find({})
+        .then(data => {
+            res.json(data)
+        })
+        .catch(err => res.json(err))
     });
+
+    
 
     return reviews;
 })();
