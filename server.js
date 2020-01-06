@@ -20,7 +20,8 @@ var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/news-scraper";
 
 mongoose.connect(MONGODB_URI, {
   useUnifiedTopology: true,
-  useNewUrlParser: true
+  useNewUrlParser: true,
+  useFindAndModify: false
 });
 
 app.listen(PORT, () => {

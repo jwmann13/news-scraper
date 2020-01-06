@@ -11,6 +11,9 @@ const AlbumSchema = new Schema({
     },
     genre: {
         type: String
+    },
+    cover: {
+        type: String
     }
 });
 

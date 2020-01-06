@@ -13,8 +13,11 @@ const ReviewSchema = new Schema({
     date: {
         type: Date
     },
-    rating: {
+    score: {
         type: Number
+    },
+    link: {
+        type: String
     },
     text: {
         type: String
