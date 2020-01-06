@@ -12,7 +12,9 @@
 
     <div class="container">
         <div class="row">
-          <%- include("../partials/review") %>
+          <% data.forEach(review => { %>
+            <%- include("../partials/review", { review: review }) %>
+          <% }) %>
         </div>
     </div>
 
