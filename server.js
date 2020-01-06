@@ -23,7 +23,7 @@ app.use("/reviews", reviews);
 app.use("/api", api);
 
 app.get("/", (req, res) => {
-  res.render("pages/index")
+  res.redirect("/reviews")
 })
 
 // mongo connection
