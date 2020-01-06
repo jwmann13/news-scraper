@@ -54,6 +54,7 @@ module.exports = (() => {
             cover: $(this)
               .find("img")
               .attr("src")
+              .replace("w_160", "w_320")
           };
 
           Album.create(newAlbum)
@@ -71,10 +72,11 @@ module.exports = (() => {
                 return Review.findByIdAndUpdate(dbReview._id, {
                   score: parseFloat(reviewPage(".score").text()),
                   text: reviewPage(".review-detail__abstract > p").text()
-                });
+                })
+                .then(e =>{ console.log(e) });
               });
             })
-            .then(() => res.send(200).end())
+            .then(() => res.status(200).end())
             .catch(err => {
               res.status(400).end();
               if (err) throw err;

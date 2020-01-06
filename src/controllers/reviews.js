@@ -6,6 +6,7 @@ module.exports = (() => {
 
     reviews.get("/", (req, res) => {
         Review.find({})
+        .populate("album")
         .then(data => {
             res.json(data)
         })
