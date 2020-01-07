@@ -24,10 +24,13 @@ module.exports = (() => {
         return cheerio.load(response.data);
       })
       .then(function($) {
+        // object to hold scraped data
         let data = {
           _reviews: [],
           _albums: []
         };
+
+        // grab each review on the page
         $(".review").each(function(i, el) {
           // begin review object to be pushed to db
           data._reviews.push({
@@ -78,6 +81,7 @@ module.exports = (() => {
           album_doc.push(await Album.create(el));
           // add the ObjectId of the resulting album to the corresponding review in the array
           data._reviews[i].album = album_doc[i]._id;
+          // create review and push its doc to an array
           review_doc.push(await Review.create(data._reviews[i]))
         }
 
@@ -90,11 +94,16 @@ module.exports = (() => {
         console.log("COLLECTIONS CREATED", data);
 
         // get individual review page for each album to grab score and review text
+        // index through each review document
         data.review_doc.forEach(function(review) {
+
+          // get page of the individual review from the doc
           axios.get(review.link)
           .then(function(response) {
+            // load review page
             const reviewPage = cheerio.load(response.data);
 
+            // update corresponding review with score and 
             return Review.findByIdAndUpdate(review._id, {
               score: parseFloat(reviewPage(".score").text()),
               text: reviewPage(".review-detail__abstract > p").text(),
@@ -102,7 +111,7 @@ module.exports = (() => {
           });
         });
       })
-      .then(() => res.status(200).end())
+      .then((data) => res.status(200).end())
       .catch(err => {
         res.status(400).end();
         if (err) throw err;
