@@ -1,0 +1,24 @@
+<div class="col-3 d-flex align-items-stretch">
+  <div class="card mb-2">
+    <a href="<%= review.link %>">
+      <img src="<%= review.album.cover %>" alt="" class="card-img-top" />
+    </a>
+    <div class="card-header">
+      <h3 class="card-title text-center">
+        <%= review.album.title %>
+      </h2>
+      <h6 class="card-subtitle text-center">
+        by <%= review.album.artist %>
+      </h6>
+    </div>
+    <div class="card-body">
+      <h6 class="card-title text-muted">
+        <%= review.author %>
+      </h6>
+      <p class="card-text">
+        <%= review.text %>
+      </p>
+      <p></p>
+    </div>
+  </div>
+</div>
