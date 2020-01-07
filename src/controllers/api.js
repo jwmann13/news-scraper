@@ -73,7 +73,9 @@ module.exports = (() => {
 
         for (let i = 0; i < data._albums.length; i++) {
           const el = data._albums[i];
-          
+          album_doc.push(await Album.create(el));
+          data._reviews[i].album = album_doc[i]._id;
+          review_doc.push(await Review.create(data._reviews[i]))
         }
 
         return {
@@ -82,13 +84,8 @@ module.exports = (() => {
           review_doc
         };
       })
-      .then(async function(data) {
-        console.log("ALBUMS CREATED", data);
-        ;
-        return data;
-      })
       .then(function(data) {
-        console.log("REVIEWS CREATED", data);
+        console.log("COLLECTIONS CREATED", data);
 
         // get individual review page for each album to grab score and review text
         data.review_doc.forEach(function(review) {
