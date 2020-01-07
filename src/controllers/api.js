@@ -71,15 +71,17 @@ module.exports = (() => {
         let album_doc = [];
         let review_doc = [];
 
+        // index each album
         for (let i = 0; i < data._albums.length; i++) {
           const el = data._albums[i];
+          // create album and push its doc to an array
           album_doc.push(await Album.create(el));
+          // add the ObjectId of the resulting album to the corresponding review in the array
           data._reviews[i].album = album_doc[i]._id;
           review_doc.push(await Review.create(data._reviews[i]))
         }
 
         return {
-          scrapes: data,
           album_doc,
           review_doc
         };
