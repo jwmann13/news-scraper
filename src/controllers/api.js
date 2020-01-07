@@ -21,11 +21,16 @@ module.exports = (() => {
     axios
       .get("https://pitchfork.com/reviews/albums/")
       .then(function(response) {
-        const $ = cheerio.load(response.data);
-
+        return cheerio.load(response.data);
+      })
+      .then(function($) {
+        let data = {
+          _reviews: [],
+          _albums: []
+        };
         $(".review").each(function(i, el) {
           // begin review object to be pushed to db
-          let newReview = {
+          data._reviews.push({
             link:
               "https://pitchfork.com" +
               $(this)
@@ -38,10 +43,10 @@ module.exports = (() => {
             date: $(this)
               .find(".pub-date")
               .attr("datetime")
-          };
+          });
 
           // album object to be pushed to db
-          let newAlbum = {
+          data._albums.push({
             title: $(this)
               .find(".review__title > h2")
               .text(),
@@ -55,35 +60,52 @@ module.exports = (() => {
               .find("img")
               .attr("src")
               .replace("w_160", "w_320")
-          };
+          });
+        });
 
-          Album.create(newAlbum)
-            .then(dbAlbum => {
-              console.log("ALBUMS", dbAlbum);
-              newReview.album = dbAlbum._id;
-              return Review.create(newReview);
-              // get individual review page for each album for score and review text
-            })
-            .then(function(dbReview) {
-              console.log("REVIEWS", dbReview);
-              axios.get(dbReview.link).then(function(response) {
-                const reviewPage = cheerio.load(response.data);
+        console.log("SHIPPING DATA", data);
+        return data;
+      })
+      .then(async function(data) {
+        console.log("DATA SCRAPED", data);
+        let album_doc = [];
+        let review_doc = [];
 
-                return Review.findByIdAndUpdate(dbReview._id, {
-                  score: parseFloat(reviewPage(".score").text()),
-                  text: reviewPage(".review-detail__abstract > p").text()
-                })
-                .then(e =>{ console.log(e) });
-              });
+        for (let i = 0; i < data._albums.length; i++) {
+          const el = data._albums[i];
+          
+        }
+
+        return {
+          scrapes: data,
+          album_doc,
+          review_doc
+        };
+      })
+      .then(async function(data) {
+        console.log("ALBUMS CREATED", data);
+        ;
+        return data;
+      })
+      .then(function(data) {
+        console.log("REVIEWS CREATED", data);
+
+        // get individual review page for each album to grab score and review text
+        data.review_doc.forEach(function(review) {
+          axios.get(review.link)
+          .then(function(response) {
+            const reviewPage = cheerio.load(response.data);
+
+            return Review.findByIdAndUpdate(review._id, {
+              score: parseFloat(reviewPage(".score").text()),
+              text: reviewPage(".review-detail__abstract > p").text(),
             })
-            .then(() => res.status(200).end())
-            .catch(err => {
-              res.status(400).end();
-              if (err) throw err;
-            });
+          });
         });
       })
+      .then(() => res.status(200).end())
       .catch(err => {
+        res.status(400).end();
         if (err) throw err;
       });
   });
