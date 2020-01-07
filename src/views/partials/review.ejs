@@ -16,9 +16,18 @@
         <%= review.author %>
       </h6>
       <p class="card-text">
+        "
         <%= review.text %>
+        "
       </p>
-      <p></p>
+      <div class="dropdown">
+        <button class="btn btn-outline-dark" id="dLabel" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Comments
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dLabel">
+          
+        </div>
+      </div>      
     </div>
   </div>
 </div>
