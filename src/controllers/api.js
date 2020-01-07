@@ -66,11 +66,11 @@ module.exports = (() => {
           });
         });
 
-        console.log("SHIPPING DATA", data);
+        // console.log("SHIPPING DATA", data);
         return data;
       })
       .then(async function(data) {
-        console.log("DATA SCRAPED", data);
+        // console.log("DATA SCRAPED", data);
         let album_doc = [];
         let review_doc = [];
 
@@ -82,7 +82,7 @@ module.exports = (() => {
           // add the ObjectId of the resulting album to the corresponding review in the array
           data._reviews[i].album = album_doc[i]._id;
           // create review and push its doc to an array
-          review_doc.push(await Review.create(data._reviews[i]))
+          review_doc.push(await Review.create(data._reviews[i]));
         }
 
         return {
@@ -90,28 +90,29 @@ module.exports = (() => {
           review_doc
         };
       })
-      .then(function(data) {
-        console.log("COLLECTIONS CREATED", data);
-
-        // get individual review page for each album to grab score and review text
+      .then(function(collections) {
+        // console.log("COLLECTIONS CREATED", collections);
+        
         // index through each review document
-        data.review_doc.forEach(function(review) {
+        for (let i = 0; i < collections.review_doc.length; i++) {
+          const review = collections.review_doc[i];
 
           // get page of the individual review from the doc
-          axios.get(review.link)
-          .then(function(response) {
+          axios.get(review.link).then(function(response) {
             // load review page
             const reviewPage = cheerio.load(response.data);
 
-            // update corresponding review with score and 
+            // update corresponding review with score and text
             return Review.findByIdAndUpdate(review._id, {
               score: parseFloat(reviewPage(".score").text()),
-              text: reviewPage(".review-detail__abstract > p").text(),
-            })
+              text: reviewPage(".review-detail__abstract > p").text()
+            });
           });
-        });
+        }
+
+        return collections;
       })
-      .then((data) => res.status(200).end())
+      .then(data => res.json(data))
       .catch(err => {
         res.status(400).end();
         if (err) throw err;
