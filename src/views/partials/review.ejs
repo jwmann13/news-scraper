@@ -1,11 +1,13 @@
 <div class="col-3 d-flex align-items-stretch">
-  <div class="card mb-2">
+  <div class="card mb-2" data-review="<%= review._id %>">
     <a href="<%= review.link %>">
       <img src="<%= review.album.cover %>" alt="" class="card-img-top" />
     </a>
     <div class="card-header">
       <h3 class="card-title text-center">
-        <%= review.album.title %>
+        <a href="<%= review.link %>">
+          <%= review.album.title %>
+        </a>
       </h2>
       <h6 class="card-subtitle text-center">
         by <%= review.album.artist %>
@@ -20,23 +22,10 @@
         <%= review.text %>
         "
       </p>
-      <div class="dropdown">
-        <button class="btn btn-outline-dark" data-review="<%= review._id %>" id="dLabel" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      <button class="btn btn-outline-dark" type="button" data-review="<%= review._id %>" data-toggle="collapse" data-target="#commentCollapse<%= index %>" aria-expanded="false" aria-controls="commentCollapse<%= index %>">
           Comments
-        </button>
-        <div class="dropdown-menu" aria-labelledby="dLabel">
-          
-        </div>
-      </div>      
+      </button>
+      <div class="collapse" aria-labelledby="dLabel" id="commentCollapse<%= index %>"></div>
     </div>
   </div>
 </div>
-<script>
-  $(".btn[data-review=<%= review._id %>]").on("click", function(event) {
-    event.preventDefault();
-
-    console.log("clickersss");
-
-    $(this).siblings(".dropdown-menu").load("reviews/comment/" + "<%= review._id %>");
-  });
-</script>
