@@ -13,6 +13,12 @@ module.exports = (() => {
         .catch(err => res.json(err))
     });
 
+    reviews.get("/comment/:id", (req, res) => {
+        Comment.find({})
+
+        res.render("partials/comment")
+    })
+
     
 
     return reviews;

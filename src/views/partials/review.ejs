@@ -21,7 +21,7 @@
         "
       </p>
       <div class="dropdown">
-        <button class="btn btn-outline-dark" id="dLabel" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <button class="btn btn-outline-dark" data-review="<%= review._id %>" id="dLabel" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           Comments
         </button>
         <div class="dropdown-menu" aria-labelledby="dLabel">
@@ -31,3 +31,12 @@
     </div>
   </div>
 </div>
+<script>
+  $(".btn[data-review=<%= review._id %>]").on("click", function(event) {
+    event.preventDefault();
+
+    console.log("clickersss");
+
+    $(this).siblings(".dropdown-menu").load("reviews/comment/" + "<%= review._id %>");
+  });
+</script>
