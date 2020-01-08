@@ -12,13 +12,27 @@
 
     <div class="container">
       <div class="row">
-        <% data.forEach(review => { %> <%- include("../partials/review", {
-        review: review }) %> <% }) %>
+        <% let index = 0; %>
+        <% data.forEach(review => { %> 
+          <%- include("../partials/review", { review: review, index: index }) %> 
+          <% index++; %> 
+        <% }) %>
       </div>
     </div>
 
     <footer>
       <%- include('../partials/footer') %>
     </footer>
+    <script>
+      $(".btn").on("click", function(event) {
+        event.preventDefault();
+
+        console.log("clickersss");
+
+        $(this)
+          .siblings(".collapse")
+          .load("reviews/comment/" + $(this).data("review"));
+      });
+    </script>
   </body>
 </html>
