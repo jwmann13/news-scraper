@@ -17,10 +17,11 @@ module.exports = (() => {
   });
 
   api.get("/scrape", (req, res) => {
-    // get albums from review landing page
+    // Get Pitchfork Album Reviews page
     axios
       .get("https://pitchfork.com/reviews/albums/")
       .then(function(response) {
+        // load into 
         return cheerio.load(response.data);
       })
       .then(function($) {
