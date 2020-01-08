@@ -14,12 +14,17 @@ module.exports = (() => {
     });
 
     reviews.get("/comment/:id", (req, res) => {
-        Comment.find({})
+        console.log(req.params.id);
+        
+        Review.findOne({ _id: req.params.id })
+        .populate("comment")
+        .then((dbReview) => {
+            console.log(dbReview.album);
+            
+        })
 
-        res.render("partials/comment")
+        res.render("partials/comment", {review: req.params.id})
     })
-
-    
 
     return reviews;
 })();

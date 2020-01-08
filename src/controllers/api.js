@@ -1,5 +1,5 @@
 const express = require("express");
-const { Album, Review } = require("../models/index");
+const { Album, Review, Comment } = require("../models/index");
 const axios = require("axios").default;
 const cheerio = require("cheerio");
 
@@ -92,7 +92,7 @@ module.exports = (() => {
       })
       .then(function(collections) {
         // console.log("COLLECTIONS CREATED", collections);
-        
+
         // index through each review document
         for (let i = 0; i < collections.review_doc.length; i++) {
           const review = collections.review_doc[i];
@@ -117,6 +117,17 @@ module.exports = (() => {
         res.status(400).end();
         if (err) throw err;
       });
+  });
+
+  api.post("/comment", (req, res) => {
+    console.log("COMMENT", req.body);
+    Comment.create(req.body)
+      .then(dbComment => {
+        return Review.findByIdAndUpdate(req.body.review, {
+          $push: { comments: dbComment._id }
+        });
+      })
+      .then(() => res.redirect("/reviews"));
   });
 
   return api;
