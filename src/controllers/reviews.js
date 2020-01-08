@@ -17,13 +17,11 @@ module.exports = (() => {
         console.log(req.params.id);
         
         Review.findOne({ _id: req.params.id })
-        .populate("comment")
+        .populate("comments")
         .then((dbReview) => {
-            console.log(dbReview.album);
-            
+            console.log(dbReview.comments);
+            res.render("partials/comment", {review: req.params.id, comments: dbReview.comments})
         })
-
-        res.render("partials/comment", {review: req.params.id})
     })
 
     return reviews;
