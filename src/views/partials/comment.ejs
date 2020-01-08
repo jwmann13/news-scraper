@@ -1,0 +1,13 @@
+<ul>
+  <% if(comments) {comments.forEach((com) => { %>
+  <li>
+    <%= com.author %>
+  </li>
+  <% })} %>
+</ul>
+<form action="/api/comment" method="post">
+  <input type="text" name="body" id="body" placeholder="add a comment!" />
+  <input type="text" name="author" id="author" placeholder="Name" />
+  <input type="hidden" name="review" id="review" value="<%= review %>" />
+  <input type="submit" value="Submit" />
+</form>

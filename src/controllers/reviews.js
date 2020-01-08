@@ -13,7 +13,16 @@ module.exports = (() => {
         .catch(err => res.json(err))
     });
 
-    
+    reviews.get("/comment/:id", (req, res) => {
+        console.log(req.params.id);
+        
+        Review.findOne({ _id: req.params.id })
+        .populate("comments")
+        .then((dbReview) => {
+            console.log(dbReview.comments);
+            res.render("partials/comment", {review: req.params.id, comments: dbReview.comments})
+        })
+    })
 
     return reviews;
 })();

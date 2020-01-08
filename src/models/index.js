@@ -1,4 +1,5 @@
 module.exports = {
     Album: require("./Album"),
-    Review: require("./Review")
+    Review: require("./Review"),
+    Comment: require("./Comment")
 }
