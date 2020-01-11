@@ -30,6 +30,7 @@
         console.log("clickersss");
 
         $(this)
+        .closest(".col-3")
           .siblings(".collapse")
           .load("reviews/comment/" + $(this).data("review"));
       });
