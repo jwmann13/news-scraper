@@ -1,6 +1,6 @@
-<ul>
+<ul class="list-group mb-2">
   <% if(comments) {comments.forEach((com) => { %>
-  <li>
+  <li  class="list-group-item" style="background-color: #96b4ec;">
     <%= com.author %> said "<%= com.body %>"
   </li>
   <% })} %>

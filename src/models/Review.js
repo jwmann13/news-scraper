@@ -21,7 +21,9 @@ const ReviewSchema = new Schema({
         type: Number
     },
     link: {
-        type: String
+        type: String,
+        required: true,
+        unique: true
     },
     text: {
         type: String

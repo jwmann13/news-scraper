@@ -12,10 +12,17 @@
 
     <div class="container">
       <div class="row">
-        <% let index = 0; %>
-        <% data.forEach(review => { %> 
-          <%- include("../partials/review", { review: review, index: index }) %> 
-          <% index++; %> 
+        <% let collapseNum = 1; %>
+        <% data.forEach((review, i) => { %>
+          <%- include("../partials/review", { review: review, index: collapseNum}) %>
+          <% if (i%4 === 3) { %>
+            <div
+              class="collapse w-100 mx-3 mb-4"
+              aria-labelledby="dLabel"
+              id="commentCollapse<%= collapseNum %>"
+            ></div>
+            <% collapseNum++ %>
+          <% } %>
         <% }) %>
       </div>
     </div>
@@ -30,7 +37,8 @@
         console.log("clickersss");
 
         $(this)
-          .siblings(".collapse")
+          .closest(".col-3")
+          .siblings(".collapse" + $(this).data("target"))
           .load("reviews/comment/" + $(this).data("review"));
       });
     </script>

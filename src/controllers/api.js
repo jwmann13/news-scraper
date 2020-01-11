@@ -21,7 +21,7 @@ module.exports = (() => {
     axios
       .get("https://pitchfork.com/reviews/albums/")
       .then(function(response) {
-        // load into 
+        // load into
         return cheerio.load(response.data);
       })
       .then(function($) {
@@ -81,7 +81,7 @@ module.exports = (() => {
           // create album and push its doc to an array
           album_doc.push(await Album.create(el));
           // add the ObjectId of the resulting album to the corresponding review in the array
-          data._reviews[i].album = album_doc[i]._id;
+          if (data._reviews[i]) data._reviews[i].album = album_doc[i]._id;
           // create review and push its doc to an array
           review_doc.push(await Review.create(data._reviews[i]));
         }
@@ -97,18 +97,21 @@ module.exports = (() => {
         // index through each review document
         for (let i = 0; i < collections.review_doc.length; i++) {
           const review = collections.review_doc[i];
+          if (review) {
+            // console.log(review);
 
-          // get page of the individual review from the doc
-          axios.get(review.link).then(function(response) {
-            // load review page
-            const reviewPage = cheerio.load(response.data);
+            // get page of the individual review from the doc
+            axios.get(review.link).then(function(response) {
+              // load review page
+              const reviewPage = cheerio.load(response.data);
 
-            // update corresponding review with score and text
-            return Review.findByIdAndUpdate(review._id, {
-              score: parseFloat(reviewPage(".score").text()),
-              text: reviewPage(".review-detail__abstract > p").text()
+              // update corresponding review with score and text
+              return Review.findByIdAndUpdate(review._id, {
+                score: parseFloat(reviewPage(".score").text()),
+                text: reviewPage(".review-detail__abstract > p").text()
+              });
             });
-          });
+          }
         }
 
         return collections;
