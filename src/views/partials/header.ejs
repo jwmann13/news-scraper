@@ -1,17 +1,27 @@
 <!-- views/partials/header.ejs -->
 
-<nav class="navbar navbar-light bg-light mb-4 position-sticky" role="navigation">
+<nav
+  class="navbar navbar-light bg-light mb-4 position-sticky"
+  role="navigation"
+>
   <div class="container-fluid">
     <a href="" class="navbar-brand">It's like pitchfork in here</a>
     <ul class="navbar-nav ml-auto flex-row">
       <li class="nav-item mx-2">
-        <button class="btn nav-link" onclick="fetch('/api/scrape/').then(this.location.reload)">Scrape More Albums!</button>
+        <button
+          class="btn nav-link"
+          onclick="fetch('/api/scrape/').then(() => setTimeout(window.location.reload.bind(window.location), 500))"
+        >
+          Scrape More Albums!
+        </button>
       </li>
       <li class="nav-item mx-2">
-        <button class="btn nav-link" onclick="fetch('/api/clear', {method:'DELETE'})">Clear the Albums</button>
-      </li>
-      <li class="nav-item mx-2">
-        <a href="#" class="nav-link">Never Home</a>
+        <button
+          class="btn nav-link"
+          onclick="fetch('/api/clear', {method:'DELETE'}).then(() => setTimeout(window.location.reload.bind(window.location), 500))"
+        >
+          Clear the Albums
+        </button>
       </li>
     </ul>
   </div>
