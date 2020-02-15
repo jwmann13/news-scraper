@@ -30,12 +30,10 @@
     <footer>
       <%- include('../partials/footer') %>
     </footer>
+    <!-- load comment partial for corresponding review -->
     <script>
       $(".btn").on("click", function(event) {
         event.preventDefault();
-
-        console.log("clickersss");
-
         $(this)
           .closest(".col-3")
           .siblings(".collapse" + $(this).data("target"))

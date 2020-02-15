@@ -134,5 +134,13 @@ module.exports = (() => {
       .then(() => res.redirect("/reviews"));
   });
 
+  api.delete("/clear", (req, res) => {
+    Review.deleteMany({})
+      .then(() => Album.deleteMany({}))
+      .then(() => Comment.deleteMany({}))
+      .then(res.status(200).end())
+      .catch(err => res.status(400).json(err));
+  });
+
   return api;
 })();

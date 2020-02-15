@@ -5,10 +5,10 @@
     <a href="" class="navbar-brand">It's like pitchfork in here</a>
     <ul class="navbar-nav ml-auto flex-row">
       <li class="nav-item mx-2">
-        <a href="#" class="nav-link">Home</a>
+        <button class="btn nav-link" onclick="fetch('/api/scrape/').then(this.location.reload)">Scrape More Albums!</button>
       </li>
       <li class="nav-item mx-2">
-        <a href="#" class="nav-link">Not Home</a>
+        <button class="btn nav-link" onclick="fetch('/api/clear', {method:'DELETE'})">Clear the Albums</button>
       </li>
       <li class="nav-item mx-2">
         <a href="#" class="nav-link">Never Home</a>

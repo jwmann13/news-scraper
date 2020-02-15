@@ -6,8 +6,8 @@ const PORT = process.env.PORT || 3000;
 
 const app = express();
 
-app.set("view engine", "ejs")
-app.set("views", "./src/views/")
+app.set("view engine", "ejs");
+app.set("views", "./src/views/");
 
 // morgan for dev logging
 app.use(logger("dev"));
@@ -23,8 +23,8 @@ app.use("/reviews", reviews);
 app.use("/api", api);
 
 app.get("/", (req, res) => {
-  res.redirect("/reviews")
-})
+  res.redirect("/reviews");
+});
 
 // mongo connection
 var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/news-scraper";
